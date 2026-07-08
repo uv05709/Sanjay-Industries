@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   SANJAY INDUSTRIES — GLOBAL STYLES
+   Premium Handcrafted Luxury Brand Design System
+   ═══════════════════════════════════════════════════════════════ */
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-body text-text bg-cream;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading text-text-heading;
+    font-weight: 600;
+  }
+
+  h1 { @apply text-display; }
+  h2 { @apply text-heading-1; }
+  h3 { @apply text-heading-2; }
+  h4 { @apply text-heading-3; }
+
+  a {
+    @apply text-primary transition-colors duration-300;
+    text-decoration: none;
+  }
+  a:hover {
+    @apply text-accent;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  ::selection {
+    background: rgba(200, 155, 60, 0.2);
+    color: #2C2C2C;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #F2ECE2;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #8B5E3C;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5C2E1F;
+  }
+}
+
+@layer components {
+  /* Container */
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-narrow {
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Section spacing */
+  .section-padding {
+    @apply py-16 md:py-24 lg:py-28;
+  }
+
+  /* Premium button styles */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-3.5 bg-primary text-white font-body font-semibold text-sm tracking-wide uppercase
+           transition-all duration-300 rounded-md
+           hover:bg-primary-dark hover:shadow-warm-lg
+           focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-cream;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center px-8 py-3.5 bg-accent text-white font-body font-semibold text-sm tracking-wide uppercase
+           transition-all duration-300 rounded-md
+           hover:bg-accent-dark hover:shadow-gold
+           focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-cream;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-8 py-3.5 border-2 border-primary text-primary font-body font-semibold text-sm tracking-wide uppercase
+           transition-all duration-300 rounded-md bg-transparent
+           hover:bg-primary hover:text-white
+           focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
+
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center px-8 py-3.5 border-2 border-white text-white font-body font-semibold text-sm tracking-wide uppercase
+           transition-all duration-300 rounded-md bg-transparent
+           hover:bg-white hover:text-primary
+           focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2;
+  }
+
+  /* Card styles */
+  .card {
+    @apply bg-white rounded-lg shadow-warm transition-all duration-400
+           hover:shadow-warm-lg;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-lg shadow-warm-lg;
+  }
+
+  /* Section heading */
+  .section-label {
+    @apply text-accent font-body text-sm font-semibold tracking-[0.2em] uppercase mb-3;
+  }
+
+  .section-title {
+    @apply font-heading text-heading-1 md:text-display-sm text-primary mb-4;
+  }
+
+  .section-subtitle {
+    @apply text-text text-body-lg max-w-2xl leading-relaxed;
+  }
+
+  /* Divider */
+  .divider {
+    @apply w-16 h-0.5 bg-accent;
+  }
+
+  .divider-center {
+    @apply w-16 h-0.5 bg-accent mx-auto;
+  }
+
+  /* Input styles */
+  .input-field {
+    @apply w-full px-4 py-3 border border-cream-darker rounded-md bg-white text-text-dark font-body
+           transition-all duration-300
+           focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10
+           placeholder:text-text-light;
+  }
+
+  .input-label {
+    @apply block text-sm font-medium text-text-dark mb-1.5 font-body;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-caption font-medium;
+  }
+
+  .badge-accent {
+    @apply badge bg-accent-50 text-accent-700;
+  }
+
+  .badge-success {
+    @apply badge bg-green-50 text-success;
+  }
+
+  /* Overlay */
+  .overlay-dark {
+    @apply absolute inset-0 bg-black/50;
+  }
+
+  .overlay-gradient {
+    background: linear-gradient(to bottom, transparent 0%, rgba(44, 44, 44, 0.8) 100%);
+    @apply absolute inset-0;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+}
