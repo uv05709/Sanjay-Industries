@@ -1,9 +1,14 @@
 import { FaWhatsapp } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { useSettings } from '../../context/SettingsContext';
 
 const FloatingWhatsApp = () => {
-  const phoneNumber = '91XXXXXXXXXX';
+  const { settings } = useSettings();
+  const phoneNumber = settings.contactInfo?.whatsapp || settings.contactInfo?.phone?.replace(/[^0-9]/g, '') || '';
   const message = encodeURIComponent('Hello Sanjay Industries, I am interested in your wooden products. Please share details.');
+
+  // Don't render if no phone number is configured
+  if (!phoneNumber) return null;
 
   return (
     <motion.a

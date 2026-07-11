@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { HiLocationMarker, HiPhone, HiMail, HiClock } from 'react-icons/hi';
 import { FaFacebookF, FaInstagram, FaYoutube, FaPinterestP } from 'react-icons/fa';
 import { subscribeNewsletter } from '../../api';
+import { useSettings } from '../../context/SettingsContext';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [subStatus, setSubStatus] = useState('');
+  const { settings } = useSettings();
 
   const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
@@ -20,6 +22,21 @@ const Footer = () => {
       setSubStatus(error.response?.data?.message || 'Something went wrong');
     }
   };
+
+  // Build social links array from settings — only show ones that have a URL
+  const socialLinksData = [
+    { icon: FaFacebookF, href: settings.socialLinks?.facebook },
+    { icon: FaInstagram, href: settings.socialLinks?.instagram },
+    { icon: FaYoutube, href: settings.socialLinks?.youtube },
+    { icon: FaPinterestP, href: settings.socialLinks?.pinterest },
+  ].filter(s => s.href);
+
+  const contactPhone = settings.contactInfo?.phone || '';
+  const contactEmail = settings.contactInfo?.email || 'info@sanjayindustries.com';
+  const address = settings.contactInfo?.address || {};
+  const addressStr = [address.city, address.state, address.country].filter(Boolean).join(', ') + (address.pincode ? ` — ${address.pincode}` : '');
+  const workingWeekdays = settings.workingHours?.weekdays || 'Mon–Sat: 9:00 AM – 7:00 PM';
+  const workingWeekends = settings.workingHours?.weekends || 'Sunday: Closed';
 
   return (
     <footer className="bg-dark text-white/80">
@@ -54,30 +71,27 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           {/* Column 1 — About */}
           <div>
-            <div className="font-heading text-2xl text-white font-bold mb-1">Sanjay Industries</div>
+            <div className="font-heading text-2xl text-white font-bold mb-1">{settings.siteName || 'Sanjay Industries'}</div>
             <div className="text-accent text-xs tracking-[0.2em] uppercase mb-5">Varanasi, India</div>
             <p className="text-sm leading-relaxed text-white/60 mb-6">
               A family-owned manufacturing business crafting traditional wooden Sindhora and handicraft products.
               From our workshop in the holy city of Varanasi, we supply handcrafted quality across India.
             </p>
-            <div className="flex gap-3">
-              {[
-                { icon: FaFacebookF, href: '#' },
-                { icon: FaInstagram, href: '#' },
-                { icon: FaYoutube, href: '#' },
-                { icon: FaPinterestP, href: '#' },
-              ].map((social, i) => (
-                <a
-                  key={i}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 flex items-center justify-center rounded-md bg-white/10 text-white/60 hover:bg-accent hover:text-white transition-all duration-300"
-                >
-                  <social.icon className="w-3.5 h-3.5" />
-                </a>
-              ))}
-            </div>
+            {socialLinksData.length > 0 && (
+              <div className="flex gap-3">
+                {socialLinksData.map((social, i) => (
+                  <a
+                    key={i}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 flex items-center justify-center rounded-md bg-white/10 text-white/60 hover:bg-accent hover:text-white transition-all duration-300"
+                  >
+                    <social.icon className="w-3.5 h-3.5" />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Column 2 — Quick Links */}
@@ -138,23 +152,29 @@ const Footer = () => {
           <div>
             <h4 className="font-heading text-lg text-white font-semibold mb-5">Contact Us</h4>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <HiLocationMarker className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-white/60">Varanasi, Uttar Pradesh, India — 221001</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <HiPhone className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                <a href="tel:+91XXXXXXXXXX" className="text-sm text-white/60 hover:text-accent transition-colors">+91-XXXXXXXXXX</a>
-              </li>
-              <li className="flex items-start gap-3">
-                <HiMail className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                <a href="mailto:info@sanjayindustries.com" className="text-sm text-white/60 hover:text-accent transition-colors">info@sanjayindustries.com</a>
-              </li>
+              {addressStr && (
+                <li className="flex items-start gap-3">
+                  <HiLocationMarker className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-white/60">{addressStr}</span>
+                </li>
+              )}
+              {contactPhone && (
+                <li className="flex items-start gap-3">
+                  <HiPhone className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
+                  <a href={`tel:${contactPhone}`} className="text-sm text-white/60 hover:text-accent transition-colors">{contactPhone}</a>
+                </li>
+              )}
+              {contactEmail && (
+                <li className="flex items-start gap-3">
+                  <HiMail className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
+                  <a href={`mailto:${contactEmail}`} className="text-sm text-white/60 hover:text-accent transition-colors">{contactEmail}</a>
+                </li>
+              )}
               <li className="flex items-start gap-3">
                 <HiClock className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
                 <div className="text-sm text-white/60">
-                  <p>Mon–Sat: 9:00 AM – 7:00 PM</p>
-                  <p>Sunday: Closed</p>
+                  <p>{workingWeekdays}</p>
+                  <p>{workingWeekends}</p>
                 </div>
               </li>
             </ul>
@@ -166,7 +186,7 @@ const Footer = () => {
       <div className="border-t border-white/10">
         <div className="container-custom py-5 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/40">
-            © {new Date().getFullYear()} Sanjay Industries. All rights reserved. Handcrafted in Varanasi, India.
+            © {new Date().getFullYear()} {settings.siteName || 'Sanjay Industries'}. All rights reserved. Handcrafted in Varanasi, India.
           </p>
           <div className="flex gap-4">
             {[

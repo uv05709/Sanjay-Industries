@@ -58,7 +58,7 @@ const ManageBlogs = () => {
     imgData.append('folder', 'blogs');
     try {
       const { data } = await uploadImage(imgData);
-      setFormData(prev => ({ ...prev, featuredImage: { url: data.url, publicId: data.publicId } }));
+      setFormData(prev => ({ ...prev, featuredImage: { url: data.image.url, publicId: data.image.publicId } }));
     } catch (error) { alert('Image upload failed'); } finally { setUploadingImage(false); e.target.value = null; }
   };
 

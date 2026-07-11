@@ -33,7 +33,7 @@ const ManageGallery = () => {
     imgData.append('folder', 'gallery');
     try {
       const { data } = await uploadImage(imgData);
-      setFormData(prev => ({ ...prev, image: { url: data.url, publicId: data.publicId } }));
+      setFormData(prev => ({ ...prev, image: { url: data.image.url, publicId: data.image.publicId } }));
     } catch (error) { alert('Image upload failed'); } finally { setUploadingImage(false); e.target.value = null; }
   };
 

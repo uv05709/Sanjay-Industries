@@ -6,21 +6,27 @@ import { motion } from 'framer-motion';
 import SEOHead from '../../components/common/SEOHead';
 import Breadcrumb from '../../components/common/Breadcrumb';
 import { submitContactMessage } from '../../api';
+import { useSettings } from '../../context/SettingsContext';
 
 const Contact = () => {
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm();
   const [success, setSuccess] = useState(false);
+  const { settings } = useSettings();
 
   const onSubmit = async (data) => {
     try { await submitContactMessage(data); setSuccess(true); reset(); }
     catch (error) { alert(error.response?.data?.message || 'Something went wrong.'); }
   };
 
+  const address = settings.contactInfo?.address || {};
+  const addressStr = [address.street, address.city, address.state].filter(Boolean).join(', ') + (address.pincode ? ` — ${address.pincode}` : '');
+  const whatsappNumber = settings.contactInfo?.whatsapp || settings.contactInfo?.phone?.replace(/[^0-9]/g, '') || '';
+
   const contactInfo = [
-    { icon: HiLocationMarker, title: 'Visit Us', lines: ['Varanasi, Uttar Pradesh', 'India — 221001'] },
-    { icon: HiPhone, title: 'Call Us', lines: ['+91-XXXXXXXXXX', '+91-XXXXXXXXXX'] },
-    { icon: HiMail, title: 'Email Us', lines: ['info@sanjayindustries.com', 'sales@sanjayindustries.com'] },
-    { icon: HiClock, title: 'Working Hours', lines: ['Mon–Sat: 9:00 AM – 7:00 PM', 'Sunday: Closed'] },
+    { icon: HiLocationMarker, title: 'Visit Us', lines: [addressStr || 'Varanasi, Uttar Pradesh', address.country || 'India'] },
+    { icon: HiPhone, title: 'Call Us', lines: [settings.contactInfo?.phone || 'Contact us for details'].filter(Boolean) },
+    { icon: HiMail, title: 'Email Us', lines: [settings.contactInfo?.email || 'info@sanjayindustries.com'].filter(Boolean) },
+    { icon: HiClock, title: 'Working Hours', lines: [settings.workingHours?.weekdays || 'Mon–Sat: 9:00 AM – 7:00 PM', settings.workingHours?.weekends || 'Sunday: Closed'] },
   ];
 
   return (
@@ -72,7 +78,7 @@ const Contact = () => {
             <div>
               <div className="card overflow-hidden h-full min-h-[400px]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115014.00946455225!2d82.91198555!3d25.320555849999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398e2db76febcf4d%3A0x68131710853ff0b5!2sVaranasi%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1700000000000"
+                  src={settings.googleMapsEmbed || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115014.00946455225!2d82.91198555!3d25.320555849999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398e2db76febcf4d%3A0x68131710853ff0b5!2sVaranasi%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1700000000000"}
                   width="100%" height="100%" style={{ border: 0, minHeight: '400px' }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Sanjay Industries Location - Varanasi"
                 />
               </div>
@@ -80,12 +86,14 @@ const Contact = () => {
           </div>
 
           {/* WhatsApp CTA */}
-          <div className="mt-12 text-center">
-            <p className="text-text mb-4">Prefer to chat? Reach us directly on WhatsApp for a faster response.</p>
-            <a href="https://wa.me/91XXXXXXXXXX?text=Hello%20Sanjay%20Industries" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#25D366] text-white font-semibold text-sm rounded-md hover:bg-[#1DA851] transition-colors">
-              <FaWhatsapp className="w-5 h-5" /> Chat on WhatsApp
-            </a>
-          </div>
+          {whatsappNumber && (
+            <div className="mt-12 text-center">
+              <p className="text-text mb-4">Prefer to chat? Reach us directly on WhatsApp for a faster response.</p>
+              <a href={`https://wa.me/${whatsappNumber}?text=Hello%20Sanjay%20Industries`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#25D366] text-white font-semibold text-sm rounded-md hover:bg-[#1DA851] transition-colors">
+                <FaWhatsapp className="w-5 h-5" /> Chat on WhatsApp
+              </a>
+            </div>
+          )}
         </div>
       </section>
     </>

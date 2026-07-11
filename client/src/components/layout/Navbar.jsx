@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenu, HiX, HiChevronDown, HiSearch } from 'react-icons/hi';
+import { useSettings } from '../../context/SettingsContext';
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -30,6 +31,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState(null);
   const location = useLocation();
+  const { settings } = useSettings();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -59,8 +61,8 @@ const Navbar = () => {
               Manufacturer & Wholesale Supplier — Varanasi, India
             </span>
             <div className={`flex items-center gap-6 transition-colors duration-400 ${isScrolled || !isHome ? 'text-text-light' : 'text-white/70'}`}>
-              <a href="tel:+91XXXXXXXXXX" className="hover:text-accent transition-colors">+91-XXXXXXXXXX</a>
-              <a href="mailto:info@sanjayindustries.com" className="hover:text-accent transition-colors">info@sanjayindustries.com</a>
+              {settings.contactInfo?.phone && <a href={`tel:${settings.contactInfo.phone}`} className="hover:text-accent transition-colors">{settings.contactInfo.phone}</a>}
+              {settings.contactInfo?.email && <a href={`mailto:${settings.contactInfo.email}`} className="hover:text-accent transition-colors">{settings.contactInfo.email}</a>}
             </div>
           </div>
         </div>

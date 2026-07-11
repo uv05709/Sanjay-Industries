@@ -6,6 +6,7 @@ import { HiArrowRight, HiCheckCircle } from 'react-icons/hi';
 import SEOHead from '../../components/common/SEOHead';
 import Breadcrumb from '../../components/common/Breadcrumb';
 import { getProduct, getRelatedProducts } from '../../api';
+import { useSettings } from '../../context/SettingsContext';
 
 const SingleProduct = () => {
   const { slug } = useParams();
@@ -14,6 +15,8 @@ const SingleProduct = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('description');
+  const { settings } = useSettings();
+  const whatsappNumber = settings.contactInfo?.whatsapp || settings.contactInfo?.phone?.replace(/[^0-9]/g, '') || '';
 
   useEffect(() => {
     fetchProduct();
@@ -140,9 +143,9 @@ const SingleProduct = () => {
                 <Link to="/bulk-order" className="btn-primary">
                   Request Bulk Enquiry <HiArrowRight className="ml-2 w-4 h-4" />
                 </Link>
-                <a href={`https://wa.me/91XXXXXXXXXX?text=${whatsappMsg}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#25D366] text-white font-semibold text-sm rounded-md hover:bg-[#1DA851] transition-colors">
+                {whatsappNumber && <a href={`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#25D366] text-white font-semibold text-sm rounded-md hover:bg-[#1DA851] transition-colors">
                   <FaWhatsapp className="w-4 h-4" /> WhatsApp Enquiry
-                </a>
+                </a>}
               </div>
 
               <p className="text-xs text-text-light">Prices are for wholesale orders. Retail pricing available on request. Custom colours and designs available for orders of 500+ pieces.</p>

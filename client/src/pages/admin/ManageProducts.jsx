@@ -101,7 +101,7 @@ const ManageProducts = () => {
       const { data } = await uploadImage(imgData);
       setFormData(prev => ({
         ...prev,
-        images: [...prev.images, { url: data.url, publicId: data.publicId, alt: prev.name }]
+        images: [...prev.images, { url: data.image.url, publicId: data.image.publicId, alt: prev.name }]
       }));
     } catch (error) {
       alert('Image upload failed');
