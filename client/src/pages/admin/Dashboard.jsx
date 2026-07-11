@@ -17,7 +17,10 @@ const Dashboard = () => {
     setLoading(true);
     try {
       const { data } = await getDashboardStats();
-      setStats(data.stats);
+      setStats({ 
+        ...data.stats, 
+        recentOrders: data.recent?.bulkOrders || [] 
+      });
       setError('');
     } catch (err) {
       setError('Failed to load dashboard statistics.');
@@ -33,10 +36,10 @@ const Dashboard = () => {
   if (loading && !stats) return <Loader />;
 
   const statCards = [
-    { title: 'Total Products', value: stats?.products || 0, icon: HiShoppingBag, color: 'text-blue-600', bg: 'bg-blue-100', link: '/admin/products' },
-    { title: 'Bulk Orders', value: stats?.bulkOrders || 0, icon: HiInboxIn, color: 'text-accent', bg: 'bg-accent/10', link: '/admin/bulk-orders' },
-    { title: 'Registered Dealers', value: stats?.dealers || 0, icon: HiUsers, color: 'text-green-600', bg: 'bg-green-100', link: '/admin/dealers' },
-    { title: 'Unread Messages', value: stats?.unreadMessages || 0, icon: HiChatAlt2, color: 'text-red-600', bg: 'bg-red-100', link: '/admin/messages' },
+    { title: 'Total Products', value: stats?.products?.total || 0, icon: HiShoppingBag, color: 'text-blue-600', bg: 'bg-blue-100', link: '/admin/products' },
+    { title: 'Bulk Orders', value: stats?.bulkOrders?.total || 0, icon: HiInboxIn, color: 'text-accent', bg: 'bg-accent/10', link: '/admin/bulk-orders' },
+    { title: 'Registered Dealers', value: stats?.dealers?.total || 0, icon: HiUsers, color: 'text-green-600', bg: 'bg-green-100', link: '/admin/dealers' },
+    { title: 'Unread Messages', value: stats?.messages?.unread || 0, icon: HiChatAlt2, color: 'text-red-600', bg: 'bg-red-100', link: '/admin/messages' },
   ];
 
   return (
@@ -124,7 +127,7 @@ const Dashboard = () => {
               <h2 className="font-semibold text-lg">System Status</h2>
             </div>
             <p className="text-white/80 text-sm mb-6 leading-relaxed">
-              Your catalog currently has <strong className="text-white">{stats?.products || 0}</strong> products across <strong className="text-white">{stats?.categories || 0}</strong> categories.
+              Your catalog currently has <strong className="text-white">{stats?.products?.total || 0}</strong> products across <strong className="text-white">{stats?.categories || 0}</strong> categories.
               The website is running smoothly.
             </p>
             <div className="flex gap-3">
