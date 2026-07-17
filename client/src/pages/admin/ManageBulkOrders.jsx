@@ -20,7 +20,7 @@ const ManageBulkOrders = () => {
     setLoading(true);
     try {
       const { data } = await getAdminBulkOrders();
-      setOrders(data.orders || []);
+      setOrders(data.bulkOrders || []);
     } catch (error) {
       console.error(error);
     } finally {

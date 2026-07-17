@@ -8,6 +8,17 @@ import slugify from 'slugify';
 // @access  Public
 export const getProducts = async (req, res, next) => {
   try {
+    // If category filter is a slug (not an ObjectId), resolve it to an ObjectId
+    if (req.query.category && !req.query.category.match(/^[0-9a-fA-F]{24}$/)) {
+      const cat = await Category.findOne({ slug: req.query.category });
+      if (cat) {
+        req.query.category = cat._id.toString();
+      } else {
+        // Category slug not found — return empty results
+        return res.status(200).json({ success: true, count: 0, total: 0, page: 1, pages: 0, products: [] });
+      }
+    }
+
     // Count total for pagination
     const countQuery = Product.find({ isActive: true });
     const features = new APIFeatures(countQuery, req.query).search().filter();

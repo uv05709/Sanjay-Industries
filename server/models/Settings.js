@@ -20,8 +20,8 @@ const settingsSchema = new mongoose.Schema(
     },
     contactInfo: {
       email: { type: String, default: 'info@sanjayindustries.com' },
-      phone: { type: String, default: '+91-XXXXXXXXXX' },
-      whatsapp: { type: String, default: '+91XXXXXXXXXX' },
+      phone: { type: String, default: '+91-7052409115' },
+      whatsapp: { type: String, default: '917052409115' },
       address: {
         street: { type: String, default: '' },
         city: { type: String, default: 'Varanasi' },
