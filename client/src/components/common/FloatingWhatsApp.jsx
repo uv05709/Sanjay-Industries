@@ -30,7 +30,7 @@ const FloatingWhatsApp = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showPulse, setShowPulse] = useState(true);
 
-  const phoneNumber = settings.contactInfo?.whatsapp || settings.contactInfo?.phone?.replace(/[^0-9]/g, '') || '917052409115';
+  const phoneNumber = (settings.contactInfo?.whatsapp || settings.contactInfo?.phone || '917052409115').replace(/[^0-9]/g, '');
   const businessName = settings.siteName || 'Sanjay Industries';
   const weekdays = settings.workingHours?.weekdays || 'Mon–Sat: 9:00 AM – 7:00 PM';
 

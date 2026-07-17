@@ -20,7 +20,7 @@ const Contact = () => {
 
   const address = settings.contactInfo?.address || {};
   const addressStr = [address.street, address.city, address.state].filter(Boolean).join(', ') + (address.pincode ? ` — ${address.pincode}` : '');
-  const whatsappNumber = settings.contactInfo?.whatsapp || settings.contactInfo?.phone?.replace(/[^0-9]/g, '') || '';
+  const whatsappNumber = (settings.contactInfo?.whatsapp || settings.contactInfo?.phone || '917052409115').replace(/[^0-9]/g, '');
 
   const contactInfo = [
     { icon: HiLocationMarker, title: 'Visit Us', lines: [addressStr || 'Varanasi, Uttar Pradesh', address.country || 'India'] },

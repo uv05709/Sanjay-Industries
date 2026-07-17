@@ -16,7 +16,7 @@ const SingleProduct = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('description');
   const { settings } = useSettings();
-  const whatsappNumber = settings.contactInfo?.whatsapp || settings.contactInfo?.phone?.replace(/[^0-9]/g, '') || '';
+  const whatsappNumber = (settings.contactInfo?.whatsapp || settings.contactInfo?.phone || '917052409115').replace(/[^0-9]/g, '');
 
   useEffect(() => {
     fetchProduct();

@@ -43,6 +43,7 @@ export const loginUser = (data) => api.post('/auth/login', data);
 export const registerUser = (data) => api.post('/auth/register', data);
 export const getMe = () => api.get('/auth/me');
 export const logoutUser = () => api.post('/auth/logout');
+export const updatePassword = (data) => api.put('/auth/password', data);
 
 // Products
 export const getProducts = (params) => api.get('/products', { params });
