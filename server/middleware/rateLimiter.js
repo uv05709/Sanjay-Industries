@@ -35,3 +35,15 @@ export const contactLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+// Newsletter subscription limiter
+export const newsletterLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10,
+  message: {
+    success: false,
+    message: 'Too many subscription attempts. Please try again after an hour.',
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});

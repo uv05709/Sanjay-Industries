@@ -1,6 +1,7 @@
 import Product from '../models/Product.js';
 import Category from '../models/Category.js';
 import APIFeatures from '../utils/apiFeatures.js';
+import { destroyCloudinaryImages } from '../utils/cloudinaryCleanup.js';
 import slugify from 'slugify';
 
 // @desc    Get all products
@@ -175,6 +176,9 @@ export const deleteProduct = async (req, res, next) => {
     if (product.category) {
       await Category.findByIdAndUpdate(product.category, { $inc: { productCount: -1 } });
     }
+
+    // Delete all product images from Cloudinary
+    await destroyCloudinaryImages(product.images);
 
     await product.deleteOne();
     res.status(200).json({ success: true, message: 'Product deleted' });

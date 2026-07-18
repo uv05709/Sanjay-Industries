@@ -1,4 +1,5 @@
 import Blog from '../models/Blog.js';
+import { destroyCloudinaryImage } from '../utils/cloudinaryCleanup.js';
 import slugify from 'slugify';
 
 // @desc    Get all published blogs
@@ -151,6 +152,9 @@ export const deleteBlog = async (req, res, next) => {
     if (!blog) {
       return res.status(404).json({ success: false, message: 'Blog not found' });
     }
+    // Delete featured image from Cloudinary
+    await destroyCloudinaryImage(blog.featuredImage?.publicId);
+
     await blog.deleteOne();
     res.status(200).json({ success: true, message: 'Blog deleted' });
   } catch (error) {

@@ -3,11 +3,13 @@ import { body } from 'express-validator';
 import { subscribe, unsubscribe, getSubscribers } from '../controllers/newsletterController.js';
 import { protect, authorize } from '../middleware/auth.js';
 import validate from '../middleware/validate.js';
+import { newsletterLimiter } from '../middleware/rateLimiter.js';
 
 const router = express.Router();
 
 router.post(
   '/subscribe',
+  newsletterLimiter,
   [body('email').isEmail().withMessage('Valid email is required')],
   validate,
   subscribe
@@ -15,6 +17,7 @@ router.post(
 
 router.post(
   '/unsubscribe',
+  newsletterLimiter,
   [body('email').isEmail().withMessage('Valid email is required')],
   validate,
   unsubscribe

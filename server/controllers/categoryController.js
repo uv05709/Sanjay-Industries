@@ -1,4 +1,5 @@
 import Category from '../models/Category.js';
+import { destroyCloudinaryImage } from '../utils/cloudinaryCleanup.js';
 import slugify from 'slugify';
 
 // @desc    Get all categories
@@ -74,6 +75,9 @@ export const deleteCategory = async (req, res, next) => {
     if (!category) {
       return res.status(404).json({ success: false, message: 'Category not found' });
     }
+    // Delete category image from Cloudinary
+    await destroyCloudinaryImage(category.image?.publicId);
+
     await category.deleteOne();
     res.status(200).json({ success: true, message: 'Category deleted' });
   } catch (error) {

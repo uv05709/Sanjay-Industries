@@ -1,4 +1,5 @@
 import Gallery from '../models/Gallery.js';
+import { destroyCloudinaryImage } from '../utils/cloudinaryCleanup.js';
 
 // @desc    Get all gallery images
 // @route   GET /api/gallery
@@ -55,6 +56,9 @@ export const deleteGalleryImage = async (req, res, next) => {
     if (!image) {
       return res.status(404).json({ success: false, message: 'Gallery image not found' });
     }
+    // Delete image from Cloudinary
+    await destroyCloudinaryImage(image.image?.publicId);
+
     await image.deleteOne();
     res.status(200).json({ success: true, message: 'Gallery image deleted' });
   } catch (error) {
